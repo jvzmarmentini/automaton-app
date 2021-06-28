@@ -12,7 +12,18 @@ def readFile(file_path):
         return list(filter(None, lines))
 
 def automaton(rfile):
-    line1 = rfile[0]
+    states = rfile[0]
+    print(states)
+    states = states.split("},")
+    print(states)
+    temp = states[2].split(",{")
+    states[2] = temp[0]
+    states.append(temp[1])
+
+    for i in range(len(states)):
+        states[i] = states[i].replace("{", "")
+        states[i] = states[i].replace("}", "")
+    print(states)
 
 rfile = readFile("automato.txt")
 print(rfile)
