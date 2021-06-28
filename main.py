@@ -25,6 +25,12 @@ def automaton(rfile):
         states[i] = states[i].replace("}", "")
     print(states)
 
+    functions = []
+    for func in rfile:
+        if(rfile.index(func) > 1):
+            functions.append(func)
+
+    print(functions)
 rfile = readFile("automato.txt")
 print(rfile)
 automaton(rfile)
