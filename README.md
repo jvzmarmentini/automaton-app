@@ -171,9 +171,7 @@ To run, use:
 python3 main.py
 ```
 
-Then, the generate state machine will be drawn in file.png
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+Then, the generated state machine will be drawn in file.png
 
 
 
@@ -194,7 +192,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 
 
-ACKNOWLEDGEMENTS
+<!-- ACKNOWLEDGEMENTS -->
 <!-- ## Acknowledgements
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)

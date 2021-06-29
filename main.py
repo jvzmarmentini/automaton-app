@@ -1,4 +1,16 @@
+# TODO
+# * define wich nodes are finals
+# * rename nodes (ttps://networkx.org/documentation/stable/reference/generated/networkx.relabel.relabel_nodes.html#networkx.relabel.relabel_nodes)
+# * create "search" def (to walk over graph)
+# * execute "search" with user input word and return state
+# * detach core pieces from automaton() and create their own defs
+# * optimize coverter
+# * write "pydoc"
+# * update and improve git docs
+# ?* write report
+
 import networkx as nx
+from networkx.algorithms.assortativity import neighbor_degree
 
 
 def readFile(file_path):
@@ -46,24 +58,57 @@ def automaton(rfile, graph):
         graph.add_edge(func[0], func[2],
                        label=func[1])
 
-    for neighbor in graph.neighbors("q1"):
-        print(neighbor)
-        gramar = graph.get_edge_data("q1", neighbor)
-        for simbols in gramar:
-            print(gramar[simbols]["label"])
+    # notes from the dev: good luck trying understanding this little mf
+
+    grammy = {}
+    for sym in gramatic:
+        grammy[sym] = []
+
+    open_list = []
+    closed_list = []
+    new_graph = {}
+    open_list.append([initial_state])
+    while(len(open_list) > 0):
+        # print("open_list" + str(open_list))
+        # print("closed_list" + str(closed_list))
+        for element in open_list[0]:
+            # print("element: " + str(element))
+            for neighbor in graph.neighbors(element):
+                # print("neighbor: " + str(neighbor))
+                edges = graph.get_edge_data(element, neighbor)
+                for sym in edges:
+                    if(not (neighbor in grammy[edges[sym]["label"]])):
+                        grammy[edges[sym]["label"]].append(neighbor)
+                    grammy[edges[sym]["label"]].sort()
+            # print("grammy: " + str(grammy))
+        new_graph["".join(open_list[0])] = dict(grammy)
+        closed_list.append(open_list.pop(0))
+        for sym in grammy:
+            if (not grammy[sym] == []):
+                if(not ((grammy[sym] in open_list) or (grammy[sym] in closed_list))):
+                    grammy[sym].sort()
+                    open_list.append(grammy[sym])
+                grammy[sym] = []
+    for node in new_graph:
+        new_auto.add_node(node)
+
+    for node in new_graph:
+        for edge in new_graph[node]:
+            neighbor = "".join(new_graph[node][edge])
+            new_auto.add_edge(node, neighbor, label=edge)
 
 
 rfile = readFile("automato.txt")
 graph = nx.MultiDiGraph()
-automaton(rfile, graph)
-# print(graph.edges())
+new_auto = nx.DiGraph()
 
-# pos = nx.spring_layout(graph)
-# nx.draw(graph, pos, with_labels=True, font_weight='bold')
-# edge_labels = nx.get_edge_attributes(graph, 'label')
-# nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels)
-# plt.show()
+automaton(rfile, graph)
+
 
 A = nx.nx_agraph.to_agraph(graph)
-A.layout()
+A.layout(prog="dot")
 A.draw("file.png")
+
+B = nx.nx_agraph.to_agraph(new_auto)
+B.layout(prog="dot")
+B.draw("new_auto.png")
