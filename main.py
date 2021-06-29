@@ -1,6 +1,5 @@
-import matplotlib.pyplot as plt
 import networkx as nx
-from networkx.drawing.nx_agraph import to_agraph 
+
 
 def readFile(file_path):
     with open(file_path) as file:
@@ -11,6 +10,7 @@ def readFile(file_path):
         lines[0] = lines[0].replace(")", "")
         lines[2] = lines[2].replace("Prog", "")
         return list(filter(None, lines))
+
 
 def automaton(rfile, graph):
     automaton = rfile[0]
@@ -23,13 +23,13 @@ def automaton(rfile, graph):
         automaton[i] = automaton[i].replace("{", "")
         automaton[i] = automaton[i].replace("}", "")
     states = automaton[0].split(",")
-    print("states: " + str(states))
+    # print("states: " + str(states))
     gramatic = automaton[1].split(",")
-    print("gramatic: " + str(gramatic))
+    # print("gramatic: " + str(gramatic))
     initial_state = automaton[2]
-    print("initial_state: " + str(initial_state))
+    # print("initial_state: " + str(initial_state))
     final_states = automaton[3].split(",")
-    print("final_states: " + str(final_states))
+    # print("final_states: " + str(final_states))
 
     for node in states:
         graph.add_node(node)
@@ -43,23 +43,27 @@ def automaton(rfile, graph):
         func = func.replace(")=", ",")
         func = func.replace("(", "")
         func = func.split(",")
-        left_node = func[0]
-        right_node = func[2]
-        simba = func[1]
-        graph.add_edge(left_node, right_node, simba=simba)
+        graph.add_edge(func[0], func[2],
+                       label=func[1])
 
-    print(functions)
+    for neighbor in graph.neighbors("q1"):
+        print(neighbor)
+        gramar = graph.get_edge_data("q1", neighbor)
+        for simbols in gramar:
+            print(gramar[simbols]["label"])
+
 
 rfile = readFile("automato.txt")
-print(rfile)
-graph = nx.DiGraph()
+graph = nx.MultiDiGraph()
 automaton(rfile, graph)
-pos = nx.spring_layout(graph)
-print(graph.edges)
-nx.draw(graph, pos, with_labels=True, font_weight='bold')
+# print(graph.edges())
 
-edge_labels = nx.get_edge_attributes(graph,'simba')
-print(edge_labels)
-nx.draw_networkx_edge_labels(graph, pos, edge_labels = edge_labels)
+# pos = nx.spring_layout(graph)
+# nx.draw(graph, pos, with_labels=True, font_weight='bold')
+# edge_labels = nx.get_edge_attributes(graph, 'label')
+# nx.draw_networkx_edge_labels(graph, pos, edge_labels=edge_labels)
+# plt.show()
 
-plt.show()
+A = nx.nx_agraph.to_agraph(graph)
+A.layout()
+A.draw("file.png")
