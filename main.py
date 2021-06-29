@@ -22,47 +22,40 @@ class automata:
 
 
 def readFile(file_path):
+    # see regex. maybe theres a better way to process the file
     with open(file_path) as file:
         lines = file.readlines()
         for i in range(len(lines)):
             lines[i] = lines[i].replace("\n", "")
-        lines[0] = lines[0].replace("AUTÔMATO=(", "")
-        lines[0] = lines[0].replace(")", "")
+        lines[0] = lines[0].replace(
+            "AUTÔMATO=(", "").replace(")", "").split("},")
         lines[2] = lines[2].replace("Prog", "")
-        return list(filter(None, lines))
+        temp = lines[0][2].split(",{")
+        lines[0][2] = temp[0]
+        lines[0].append(temp[1])
+        lines[0] = [c.replace('{', '').replace('}', '') for c in lines[0]]
+        lines = list(filter(None, lines))
+        for i, func in enumerate(lines[1:]):
+            lines[i+1] = func.replace(")=", ",").replace("(", "").split(",")
+        return lines
 
 
-def automaton(rfile, nd_automata):
-    automaton = rfile[0]
-    automaton = automaton.split("},")
-    temp = automaton[2].split(",{")
-    automaton[2] = temp[0]
-    automaton.append(temp[1])
-
-    for i in range(len(automaton)):
-        automaton[i] = automaton[i].replace("{", "")
-        automaton[i] = automaton[i].replace("}", "")
-    states = automaton[0].split(",")
+def nd2d_converter(rfile, nd_automata):
+    states = rfile[0][0].split(",")
     # print("states: " + str(states))
-    gramatic = automaton[1].split(",")
+    gramatic = rfile[0][1].split(",")
     # print("gramatic: " + str(gramatic))
-    initial_state = automaton[2]
+    initial_state = rfile[0][2]
     # print("initial_state: " + str(initial_state))
-    final_states = automaton[3].split(",")
+    final_states = rfile[0][3].split(",")
     # print("final_states: " + str(final_states))
 
-    for node in states:
+    a1 = automata(states, gramatic, initial_state, final_states)
+
+    for node in a1.states:
         nd_automata.add_node(node)
 
-    functions = []
-    for func in rfile:
-        if(rfile.index(func) > 0):
-            functions.append(func)
-
-    for func in functions:
-        func = func.replace(")=", ",")
-        func = func.replace("(", "")
-        func = func.split(",")
+    for func in rfile[1:]:
         nd_automata.add_edge(func[0], func[2],
                              label=func[1])
 
@@ -74,7 +67,7 @@ def automaton(rfile, nd_automata):
 
     open_list = []
     closed_list = []
-    new_graph = {}
+    new_automata = {}
     open_list.append([initial_state])
     while(len(open_list) > 0):
         # print("open_list" + str(open_list))
@@ -89,7 +82,7 @@ def automaton(rfile, nd_automata):
                         grammy[edges[sym]["label"]].append(neighbor)
                     grammy[edges[sym]["label"]].sort()
             # print("grammy: " + str(grammy))
-        new_graph["".join(open_list[0])] = dict(grammy)
+        new_automata["".join(open_list[0])] = dict(grammy)
         closed_list.append(open_list.pop(0))
         for sym in grammy:
             if (not grammy[sym] == []):
@@ -97,27 +90,26 @@ def automaton(rfile, nd_automata):
                     grammy[sym].sort()
                     open_list.append(grammy[sym])
                 grammy[sym] = []
-    for node in new_graph:
+    for node in new_automata:
         d_automata.add_node(node)
 
-    for node in new_graph:
-        for edge in new_graph[node]:
-            neighbor = "".join(new_graph[node][edge])
+    for node in new_automata:
+        for edge in new_automata[node]:
+            neighbor = "".join(new_automata[node][edge])
             d_automata.add_edge(node, neighbor, label=edge)
 
 
 rfile = readFile("automato.txt")
-print(rfile)
 nd_automata = nx.MultiDiGraph()
 d_automata = nx.DiGraph()
 
-automaton(rfile, nd_automata)
+nd2d_converter(rfile, nd_automata)
 
 
-# A = nx.nx_agraph.to_agraph(nd_automata)
-# A.layout(prog="dot")
-# A.draw("automatons/nd_automata.png")
+A = nx.nx_agraph.to_agraph(nd_automata)
+A.layout(prog="dot")
+A.draw("automatons/nd_automata.png")
 
-# B = nx.nx_agraph.to_agraph(d_automata)
-# B.layout(prog="dot")
-# B.draw("automatons/d_automata.png")
+B = nx.nx_agraph.to_agraph(d_automata)
+B.layout(prog="dot")
+B.draw("automatons/d_automata.png")
