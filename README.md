@@ -15,12 +15,12 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-[![Contributors][contributors-shield]][contributors-url]
+<!-- [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![MIT License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
+[![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 
 
@@ -68,16 +68,53 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-There are many great README templates available on GitHub, however, I didn't find one that really suit my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
+1. Criar um programa que, dado um autômato finito não determinístico M, 
+definido em um arquivo texto, execute as seguintes operações:
+a. Converta M em um autômato finito determinístico MD equivalente;
+b. Após a conversão, permita ao usuário fornecer uma palavra w para 
+reconhecimento por MD;
+c. O Programa deve determinar se w pertence à ACEITA(MD) ou 
+REJEITA(MD);
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should element DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have have contributed to expanding this template!
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
+2 - INSTRUÇÕES
+* O programa do item 1 deve ser implementado usando a qualquer 
+linguagem de programação;
+* O formato do arquivo de entrada contendo a definição do AFND deve 
+seguir o seguinte padrão:
+<M>=({<q0>,...,<qn>},{<s1>,...,<sn>},<ini>,{ <f0>,...,<fn>})
+Prog
+(<q0>,<s1>)=<q1>
+...
+(<qn>,<sn>)=<q0>TRABALHO FINAL - LINGUAGENS FORMAIS E AUTÔMATOS
+onde:
+< M >: nome dado ao autômato;
+< qi >: para 0 ≤ i ≤ n, com n ∈ N e n ≥ 0, representa um estado do 
+autômato;
+< si >: para 1 ≤ i ≤ n, com n ∈ N e n ≥1, representa um símbolo do 
+alfabeto da linguagem reconhecida pelo autômato;
+< ini >: indica o estado inicial do autômato, sendo que ini é um estado do 
+autômato;
+< fi >: para 0 ≤ i ≤ n, com n ∈ N e n ≥ 0, representa um estado final do 
+autômato, sendo que fi é um estado do autômato;
+(< qi >,< si >) =< qj > : descreve a função programa aplicada a um 
+estado qi e um símbolo de entrada si que leva a computação a um estado 
+qj.
+Exemplo:
+AUTÔMATO=({q0,q1,q2,q3},{a,b},q0,{q1,q3})
+Prog
+(q0,a)=q1
+(q0,b)=q2
+(q1,b)=q2
+(q2,a)=q3
+(q2,a)=q2
+(q3,a)=q3
+(q3,b)=q2
+* As conversões de AFND para AFD deve seguir o algoritmo apresentado 
+em aula.
+* No teste de reconhecimento de uma palavra w pelo autômato MD, a 
+mesma deve ser fornecida pelo usuário e o resultado deve ser:
+** ACEITA se w ∈ ACEITA(MD) ou
+** REJEITA se w ∈ REJEITA(MD)
 
 ### Built With
 
@@ -95,52 +132,49 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 The only requisite is to have Python installed in your machine. Here's where you can get it
-* (https://www.python.org/downloads/)
+* [Download Python](https://www.python.org/downloads/)
 
 ### Installation
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```JS
-   const API_KEY = 'ENTER YOUR API';
-   ```
+We strongly recommend using linux or macOs.
 
+1. Clone the repo
+   ```sh
+   git clone https://github.com/jvzmarmentini/automaton-app.git
+   ```
+2. Install NetworkX package
+   ```sh
+   pip install networkx
+   ```
+3. Install PyGraphviz package
+* 3.1. Linux (ubuntu or debian)
+   ```sh
+   sudo apt-get install graphviz graphviz-dev
+   pip install pygraphviz
+   ```
+* 3.2. macOs - Homebrew
+   ```sh
+   brew install graphviz
+   pip install pygraphviz
+   ```
+* 3.3. Windows
+   https://pygraphviz.github.io/documentation/stable/install.html#windows
 
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+Before executing the application, be sure that the automato.txt file has a state machine and it is formated.
+
+To run, use:
+```sh
+python3 main.py
+```
+
+Then, the generate state machine will be drawn in file.png
 
 _For more examples, please refer to the [Documentation](https://example.com)_
 
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
-
-
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 
 
@@ -152,16 +186,16 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 
 <!-- CONTACT -->
-## Contact
+<!-- ## Contact
 
 Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name) -->
 
 
 
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
+ACKNOWLEDGEMENTS
+<!-- ## Acknowledgements
 * [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
 * [Img Shields](https://shields.io)
 * [Choose an Open Source License](https://choosealicense.com)
@@ -172,7 +206,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 * [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
 * [Sticky Kit](http://leafo.net/sticky-kit)
 * [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
+* [Font Awesome](https://fontawesome.com) -->
 
 
 
@@ -180,7 +214,7 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
+<!-- [contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
 [contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
 [forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
@@ -192,4 +226,4 @@ Project Link: [https://github.com/your_username/repo_name](https://github.com/yo
 [license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
+[product-screenshot]: images/screenshot.png -->
