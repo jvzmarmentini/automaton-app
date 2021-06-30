@@ -1,13 +1,11 @@
 # TODO
-# * define wich nodes are finals
-# * create "search" def (to walk over nd_automata)
-# * execute "search" with user input word and return state
-# * detach core pieces from automaton() and create their own defs
+# * handle "empty symbol"
 # * optimize coverter
 # * write "pydoc"
 # * update and improve git docs
 # ?* write report
 
+import copy
 import networkx as nx
 from networkx.algorithms.assortativity import neighbor_degree
 
@@ -72,21 +70,21 @@ def nd2d_converter(rfile, nd_automata):
     new_automata = {}
     open_list.append([initial_state])
     while(len(open_list) > 0):
-        print("open_list" + str(open_list))
-        print("closed_list" + str(closed_list))
+        # print("open_list" + str(open_list))
+        # print("closed_list" + str(closed_list))
         for element in open_list[0]:
-            print("element: " + str(element))
+            # print("element: " + str(element))
             for neighbor in nd_automata.neighbors(element):
-                print("neighbor: " + str(neighbor))
+                # print("neighbor: " + str(neighbor))
                 edges = nd_automata.get_edge_data(element, neighbor)
                 for sym in edges:
                     if(not (neighbor in grammy[edges[sym]["label"]])):
                         grammy[edges[sym]["label"]].append(neighbor)
                     grammy[edges[sym]["label"]].sort()
-            print("grammy: " + str(grammy))
+            # print("grammy: " + str(grammy))
         new_automata["".join(open_list[0])] = copy.deepcopy(grammy.copy())
-        print(new_automata)
-        print("dict(grammy): " + str(dict(grammy)))
+        # print(new_automata)
+        # print("dict(grammy): " + str(dict(grammy)))
         closed_list.append(open_list.pop(0))
         for sym in grammy:
             if (not grammy[sym] == []):
@@ -102,7 +100,6 @@ def nd2d_converter(rfile, nd_automata):
         else:
             d_automata.add_node(node, initial=False, final=False)
 
-    print(new_automata)
     for node in new_automata:
         for edge in new_automata[node]:
             if(new_automata[node][edge] == []):
@@ -115,12 +112,17 @@ def wordProcessing(rfile, d_automata, input):
     initial_state = rfile[0][2]
     current = initial_state
     for letter in input:
+        if (letter not in rfile[0][1]):
+            return "a palavra contem uma letra que nao esta no dicionario"
         for neighbor in d_automata.neighbors(current):
             edges = d_automata.get_edge_data(current, neighbor)
             for sym in edges:
                 if(letter == edges[sym]["label"]):
                     current = neighbor
-    return True
+    for node in d_automata.nodes(data=True):
+        if(node[0] == current):
+            return node[1]["final"]
+    return False
 
 
 rfile = readFile("automato.txt")
@@ -128,21 +130,14 @@ nd_automata = nx.MultiDiGraph()
 d_automata = nx.MultiDiGraph()
 
 nd2d_converter(rfile, nd_automata)
-wordProcessing(rfile, d_automata, "0")
-# relabel nodes on d_automata
-
-# print(nx.get_node_attributes(d_automata, "final"))
-
+print(wordProcessing(rfile, d_automata, ""))
 
 old_names = list(d_automata.nodes())
 
 name_map = dict.fromkeys(old_names)
 for i in range(len(old_names)):
     name_map[old_names[i]] = old_names[i]
-    # print(str(old_names[i]) + ": " + str(name_map[old_names[i]]))
-# print(name_map)
 d_automata = nx.relabel_nodes(d_automata, name_map)
-
 
 A = nx.nx_agraph.to_agraph(nd_automata)
 A.layout(prog="dot")
