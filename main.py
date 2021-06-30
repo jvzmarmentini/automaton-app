@@ -1,6 +1,5 @@
 # TODO
 # * define wich nodes are finals
-# * rename nodes (ttps://networkx.org/documentation/stable/reference/generated/networkx.relabel.relabel_nodes.html#networkx.relabel.relabel_nodes)
 # * create "search" def (to walk over nd_automata)
 # * execute "search" with user input word and return state
 # * detach core pieces from automaton() and create their own defs
