@@ -1,6 +1,5 @@
 # TODO
 # * define wich nodes are finals
-# * rename nodes (ttps://networkx.org/documentation/stable/reference/generated/networkx.relabel.relabel_nodes.html#networkx.relabel.relabel_nodes)
 # * create "search" def (to walk over nd_automata)
 # * execute "search" with user input word and return state
 # * detach core pieces from automaton() and create their own defs
@@ -98,12 +97,25 @@ def nd2d_converter(rfile, nd_automata):
             neighbor = "".join(new_automata[node][edge])
             d_automata.add_edge(node, neighbor, label=edge)
 
+    # print(nx.get_node_attributes(d_automata))
+
 
 rfile = readFile("automato.txt")
 nd_automata = nx.MultiDiGraph()
 d_automata = nx.DiGraph()
 
 nd2d_converter(rfile, nd_automata)
+
+# relabel nodes on d_automata
+old_names = list(d_automata.nodes())
+name_map = dict.fromkeys(old_names)
+for i in range(len(old_names)):
+    name_map[old_names[i]] = i
+    #print(str(old_names[i]) + ": " + str(name_map[old_names[i]]))
+# print(name_map)
+d_automata = nx.relabel_nodes(d_automata, name_map)
+
+print(d_automata.nodes())
 
 
 A = nx.nx_agraph.to_agraph(nd_automata)
