@@ -8,7 +8,6 @@
 # * update and improve git docs
 # ?* write report
 
-import copy
 import networkx as nx
 from networkx.algorithms.assortativity import neighbor_degree
 
@@ -91,8 +90,7 @@ def nd2d_converter(rfile, nd_automata):
         closed_list.append(open_list.pop(0))
         for sym in grammy:
             if (not grammy[sym] == []):
-                if(not ((grammy[sym] in open_list
-                         ) or (grammy[sym] in closed_list))):
+                if(not ((grammy[sym] in open_list) or (grammy[sym] in closed_list))):
                     grammy[sym].sort()
                     open_list.append(grammy[sym])
                 grammy[sym] = []
@@ -104,6 +102,7 @@ def nd2d_converter(rfile, nd_automata):
         else:
             d_automata.add_node(node, initial=False, final=False)
 
+    print(new_automata)
     for node in new_automata:
         for edge in new_automata[node]:
             if(new_automata[node][edge] == []):
