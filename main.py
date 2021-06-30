@@ -52,7 +52,10 @@ def nd2d_converter(rfile, nd_automata):
     a1 = automata(states, gramatic, initial_state, final_states)
 
     for node in a1.states:
-        nd_automata.add_node(node)
+        if(node in a1.final_states):
+            nd_automata.add_node(node, final=True)
+        else:
+            nd_automata.add_node(node, final=False)
 
     for func in rfile[1:]:
         nd_automata.add_edge(func[0], func[2],
@@ -69,21 +72,21 @@ def nd2d_converter(rfile, nd_automata):
     new_automata = {}
     open_list.append([initial_state])
     while(len(open_list) > 0):
-        print("open_list" + str(open_list))
-        print("closed_list" + str(closed_list))
+#        print("open_list" + str(open_list))
+#        print("closed_list" + str(closed_list))
         for element in open_list[0]:
-            print("element: " + str(element))
+#            print("element: " + str(element))
             for neighbor in nd_automata.neighbors(element):
-                print("neighbor: " + str(neighbor))
+#                print("neighbor: " + str(neighbor))
                 edges = nd_automata.get_edge_data(element, neighbor)
                 for sym in edges:
                     if(not (neighbor in grammy[edges[sym]["label"]])):
                         grammy[edges[sym]["label"]].append(neighbor)
                     grammy[edges[sym]["label"]].sort()
-            print("grammy: " + str(grammy))
+#            print("grammy: " + str(grammy))
         new_automata["".join(open_list[0])] = dict(grammy.copy())
-        print("dict(grammy): " + str(dict(grammy)))
-        print(new_automata)
+#        print("dict(grammy): " + str(dict(grammy)))
+#        print(new_automata)
         closed_list.append(open_list.pop(0))
         for sym in grammy:
             if (not grammy[sym] == []):
@@ -91,10 +94,15 @@ def nd2d_converter(rfile, nd_automata):
                     grammy[sym].sort()
                     open_list.append(grammy[sym])
                 grammy[sym] = []
-    for node in new_automata:
-        d_automata.add_node(node)
+    for i, node in enumerate(new_automata):
+        if(node in a1.initial_state): #CONFERIR 
+            d_automata.add_node(node, initial=True, final=False)
+        elif(closed_list[i][len(closed_list[i])-1] in a1.final_states):
+            d_automata.add_node(node, initial=False, final=True)
+        else:
+            d_automata.add_node(node, initial=False, final=False)
 
-    print(new_automata)
+#    print(new_automata)
     for node in new_automata:
         for edge in new_automata[node]:
             if(new_automata[node][edge] == []):
@@ -104,14 +112,14 @@ def nd2d_converter(rfile, nd_automata):
 
     # print(nx.get_node_attributes(d_automata))
 
-
 rfile = readFile("automato.txt")
 nd_automata = nx.MultiDiGraph()
 d_automata = nx.MultiDiGraph()
 
 nd2d_converter(rfile, nd_automata)
-
 # relabel nodes on d_automata
+
+#print(nx.get_node_attributes(d_automata, "final"))
 
 
 old_names = list(d_automata.nodes())
