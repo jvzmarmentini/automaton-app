@@ -1,12 +1,12 @@
-AUTÔMATO=({p,q,r,s},{0,1},p,{s})
+AUTÔMATO=({q0,q1,q2,q3},{a,b,c},q0,{q1,q3})
 
 Prog
 
-(p,0)=p
-(p,0)=q
-(p,1)=p
-(q,0)=r
-(q,1)=r
-(r,0)=s
-(s,0)=s
-(s,1)=s
+(q0,a)=q1
+(q0,c)=q2
+(q0,a)=q2
+(q1,b)=q2
+(q2,a)=q3
+(q2,a)=q2
+(q3,a)=q3
+(q3,b)=q2
