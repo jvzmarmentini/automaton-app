@@ -52,6 +52,8 @@ def automaton(rfile, nd_automata):
 
     for node in states:
         nd_automata.add_node(node)
+        if(node in final_states): #set final nodes
+            nx.set_node_attributes(nd_automata, node, final=True)
 
     functions = []
     for func in rfile:
@@ -104,6 +106,8 @@ def automaton(rfile, nd_automata):
             neighbor = "".join(new_graph[node][edge])
             d_automata.add_edge(node, neighbor, label=edge)
 
+    #print(nx.get_node_attributes(d_automata))
+
 
 rfile = readFile("automato.txt")
 print(rfile)
@@ -117,9 +121,9 @@ old_names = list(d_automata.nodes())
 name_map = dict.fromkeys(old_names)
 for i in range(len(old_names)):
     name_map[old_names[i]] = i
-    print(str(old_names[i]) + ": " + str(name_map[old_names[i]]))
+    #print(str(old_names[i]) + ": " + str(name_map[old_names[i]]))
 #print(name_map)
-d_automata = nx.relabel_nodes(d_automata, name_map, True)
+d_automata = nx.relabel_nodes(d_automata, name_map)
 
 print(d_automata.nodes())
 
