@@ -69,19 +69,21 @@ def nd2d_converter(rfile, nd_automata):
     new_automata = {}
     open_list.append([initial_state])
     while(len(open_list) > 0):
-        # print("open_list" + str(open_list))
-        # print("closed_list" + str(closed_list))
+        print("open_list" + str(open_list))
+        print("closed_list" + str(closed_list))
         for element in open_list[0]:
-            # print("element: " + str(element))
+            print("element: " + str(element))
             for neighbor in nd_automata.neighbors(element):
-                # print("neighbor: " + str(neighbor))
+                print("neighbor: " + str(neighbor))
                 edges = nd_automata.get_edge_data(element, neighbor)
                 for sym in edges:
                     if(not (neighbor in grammy[edges[sym]["label"]])):
                         grammy[edges[sym]["label"]].append(neighbor)
                     grammy[edges[sym]["label"]].sort()
-            # print("grammy: " + str(grammy))
-        new_automata["".join(open_list[0])] = dict(grammy)
+            print("grammy: " + str(grammy))
+        new_automata["".join(open_list[0])] = dict(grammy.copy())
+        print("dict(grammy): " + str(dict(grammy)))
+        print(new_automata)
         closed_list.append(open_list.pop(0))
         for sym in grammy:
             if (not grammy[sym] == []):
@@ -92,8 +94,11 @@ def nd2d_converter(rfile, nd_automata):
     for node in new_automata:
         d_automata.add_node(node)
 
+    print(new_automata)
     for node in new_automata:
         for edge in new_automata[node]:
+            if(new_automata[node][edge] == []):
+                continue
             neighbor = "".join(new_automata[node][edge])
             d_automata.add_edge(node, neighbor, label=edge)
 
@@ -102,20 +107,21 @@ def nd2d_converter(rfile, nd_automata):
 
 rfile = readFile("automato.txt")
 nd_automata = nx.MultiDiGraph()
-d_automata = nx.DiGraph()
+d_automata = nx.MultiDiGraph()
 
 nd2d_converter(rfile, nd_automata)
 
 # relabel nodes on d_automata
+
+
 old_names = list(d_automata.nodes())
+
 name_map = dict.fromkeys(old_names)
 for i in range(len(old_names)):
-    name_map[old_names[i]] = i
+    name_map[old_names[i]] = old_names[i]
     #print(str(old_names[i]) + ": " + str(name_map[old_names[i]]))
 # print(name_map)
 d_automata = nx.relabel_nodes(d_automata, name_map)
-
-print(d_automata.nodes())
 
 
 A = nx.nx_agraph.to_agraph(nd_automata)
