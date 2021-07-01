@@ -55,11 +55,6 @@
       </ul>
     </li>
     <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -68,40 +63,40 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-1. Criar um programa que, dado um autômato finito não determinístico M, 
-definido em um arquivo texto, execute as seguintes operações:
-a. Converta M em um autômato finito determinístico MD equivalente;
-b. Após a conversão, permita ao usuário fornecer uma palavra w para 
-reconhecimento por MD;
-c. O Programa deve determinar se w pertence à ACEITA(MD) ou 
-REJEITA(MD);
+### 1. Objectives
 
-2 - INSTRUÇÕES
-* O programa do item 1 deve ser implementado usando a qualquer 
-linguagem de programação;
-* O formato do arquivo de entrada contendo a definição do AFND deve 
-seguir o seguinte padrão:
-<M>=({<q0>,...,<qn>},{<s1>,...,<sn>},<ini>,{ <f0>,...,<fn>})
+Create a program that, given an finite deterministic automaton M, defined in a text file, execute the following operations:
+
+- Convert a non-deterministic automaton into an equivalent finite deterministic  automaton;
+- Allow the user to give a word to be recognized by the deterministic automaton;
+- The program should determinate if the word received is accepted by the automaton;
+
+### 2. Instructions
+
+- The program from item 1 should be implemented using any programming language;
+- The entry file format containing the non-deterministic automaton definition must follow the following pattern (including spaces between words):
+
+\<M>=({\<q0>,...,\<qn>},{\<s1>,...,\<sn>},\<ini>,{ \<f0>,...,\<fn>})
+
 Prog
-(<q0>,<s1>)=<q1>
+
+(\<q0>,\<s1>)=\<q1>
 ...
-(<qn>,<sn>)=<q0>TRABALHO FINAL - LINGUAGENS FORMAIS E AUTÔMATOS
-onde:
-< M >: nome dado ao autômato;
-< qi >: para 0 ≤ i ≤ n, com n ∈ N e n ≥ 0, representa um estado do 
-autômato;
-< si >: para 1 ≤ i ≤ n, com n ∈ N e n ≥1, representa um símbolo do 
-alfabeto da linguagem reconhecida pelo autômato;
-< ini >: indica o estado inicial do autômato, sendo que ini é um estado do 
-autômato;
-< fi >: para 0 ≤ i ≤ n, com n ∈ N e n ≥ 0, representa um estado final do 
-autômato, sendo que fi é um estado do autômato;
-(< qi >,< si >) =< qj > : descreve a função programa aplicada a um 
-estado qi e um símbolo de entrada si que leva a computação a um estado 
-qj.
-Exemplo:
-AUTÔMATO=({q0,q1,q2,q3},{a,b},q0,{q1,q3})
+(\<qn>,\<sn>)=\<q0>
+
+Where:
+\<M> is the automaton name;
+\<qi> represents one state of the automaton for 0 ≤ i ≤ n, com n ∈ N e n ≥ 0;
+\<si> represents one symbol of the alphabet of the language recognized by the automaton for 1 ≤ i ≤ n, com n ∈ N e n ≥1;
+\<ini> indicates the initial state of the automaton, where ini is a state of the automaton;
+\<fi> represents one final state of the automaton where ini is a state of the automaton and 0 ≤ i ≤ n, com n ∈ N e n ≥ 0;
+(\<qi>,\<si>)=\<qj> describes the function applied to a state \<qi> and a \<si> entry symbol that leads to the computation to a state \<qj>.
+
+Example:
+AUTOMATON=({q0,q1,q2,q3},{a,b},q0,{q1,q3})
+
 Prog
+
 (q0,a)=q1
 (q0,b)=q2
 (q1,b)=q2
@@ -109,106 +104,69 @@ Prog
 (q2,a)=q2
 (q3,a)=q3
 (q3,b)=q2
-* As conversões de AFND para AFD deve seguir o algoritmo apresentado 
-em aula.
-* No teste de reconhecimento de uma palavra w pelo autômato MD, a 
-mesma deve ser fornecida pelo usuário e o resultado deve ser:
-** ACEITA se w ∈ ACEITA(MD) ou
-** REJEITA se w ∈ REJEITA(MD)
 
 ### Built With
 
-* [Python](https://www.python.org/)
-* [NetworkX](https://networkx.org/)
-* [PyGraphviz](https://pygraphviz.github.io/)
+- [Python](https://www.python.org/)
+- [NetworkX](https://networkx.org/)
+- [PyGraphviz](https://pygraphviz.github.io/)
 
-
-
-<!-- GETTING STARTED -->
 ## Getting Started
 
-To get a local copy up and running follow these simple example steps.
+Install python 3 and download the project files.
 
 ### Prerequisites
 
-The only requisite is to have Python installed in your machine. Here's where you can get it
-* [Download Python](https://www.python.org/downloads/)
+The initial requisites is to have Python installed in your machine. Here's where you can get it:
+
+- [Download Python](https://www.python.org/downloads/)
 
 ### Installation
 
 We strongly recommend using linux or macOs.
 
 1. Clone the repo
+
    ```sh
    git clone https://github.com/jvzmarmentini/automaton-app.git
    ```
+
 2. Install NetworkX package
+
    ```sh
    pip install networkx
    ```
+
 3. Install PyGraphviz package
-* 3.1. Linux (ubuntu or debian)
+
+- 3.1. Linux (ubuntu or debian)
+
    ```sh
-   sudo apt-get install graphviz graphviz-dev
+   sudo apt install graphviz graphviz-dev
    pip install pygraphviz
    ```
-* 3.2. macOs - Homebrew
+
+- 3.2. macOs - Homebrew
+
    ```sh
    brew install graphviz
    pip install pygraphviz
    ```
-* 3.3. Windows
-   https://pygraphviz.github.io/documentation/stable/install.html#windows
 
+- 3.3. Windows
+   <https://pygraphviz.github.io/documentation/stable/install.html#windows>
 
-<!-- USAGE EXAMPLES -->
 ## Usage
 
 Before executing the application, be sure that the automato.txt file has a state machine and it is formated.
 
 To run, use:
+
 ```sh
-python3 main.py
+python3 main.py automaton-file word
 ```
 
-Then, the generated state machine will be drawn in file.png
-
-
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE` for more information.
-
-
-
-<!-- CONTACT -->
-<!-- ## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name) -->
-
-
-
-<!-- ACKNOWLEDGEMENTS -->
-<!-- ## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com) -->
-
-
-
-
+Then, the generated state machine will be drawn in a png file and the result (if the word is accepted) will be printed.
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
