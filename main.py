@@ -2,9 +2,11 @@
 # * handle "empty symbol" - Tasca
 # * update and improve git docs - Panho
 
+import sys
 import copy
 import networkx as nx
 from networkx.algorithms.assortativity import neighbor_degree
+from networkx.classes import graph
 
 
 class automata:
@@ -106,38 +108,40 @@ def wordProcessing(rfile, d_automata, input):
     return False
 
 
-rfile = readFile("automato.txt")
+file = sys.argv[1]
+word = sys.argv[2]
+rfile = readFile(file)
 nd_automata = nx.MultiDiGraph()
 d_automata = nx.MultiDiGraph()
 
 nd2d_converter(rfile, nd_automata)
-print(wordProcessing(rfile, d_automata, "LI"))
+print(wordProcessing(rfile, d_automata, word))
 
-# old_names = list(d_automata.nodes())
-
-# name_map = dict.fromkeys(old_names)
 mapping = dict(zip(d_automata.nodes(), "pqrstuvwxyzabcdefghijklmno"))
-d_automata = nx.relabel_nodes(d_automata, mapping)
 
+d_automata = nx.relabel_nodes(d_automata, mapping)
 final = list(filter(lambda x: x[1]['final'] ==
              True, nd_automata.nodes(data=True)))
 initial = list(filter(lambda x: x[1]['initial'] ==
                       True, nd_automata.nodes(data=True)))[0][0]
-nd_automata.nodes[initial]['style'] = 'filled'
-nd_automata.nodes[initial]['fillcolor'] = 'green'
+initial_arrow = nd_automata.add_node(
+    ".", fillcolor="white", shape="point", fixedsize=False, width=0, label="", size=1)
+nd_automata.add_edge(".", initial)
+
 for f in final:
     nd_automata.nodes[f[0]]['shape'] = 'doublecircle'
 A = nx.nx_agraph.to_agraph(nd_automata)
 A.layout(prog="dot")
 A.draw("automatons/nd_automata.png")
 
-# print(d_automata.nodes(data=True))
 final = list(filter(lambda x: x[1]['final'] ==
              True, d_automata.nodes(data=True)))
 initial = list(filter(lambda x: x[1]['initial'] ==
                       True, d_automata.nodes(data=True)))[0][0]
-d_automata.nodes[initial]['style'] = 'filled'
-d_automata.nodes[initial]['fillcolor'] = 'green'
+initial_arrow = d_automata.add_node(
+    ".", fillcolor="white", shape="point", fixedsize=False, width=0, label="", size=1)
+d_automata.add_edge(".", initial)
+
 for f in final:
     d_automata.nodes[f[0]]['shape'] = 'doublecircle'
 B = nx.nx_agraph.to_agraph(d_automata)
