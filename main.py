@@ -1,3 +1,5 @@
+# Integrantes: Gabriel Reis Panho, Gabriel Tasca Villa e João Victor Zucco Marmentini
+
 import sys
 import copy
 import networkx as nx
