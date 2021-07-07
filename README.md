@@ -63,17 +63,19 @@ Where:
 (\<qi>,\<si>)=\<qj> describes the function applied to a state \<qi> and a \<si> entry symbol that leads to the computation to a state \<qj>.
 
 Example:
-AUTOMATON=({q0,q1,q2,q3},{a,b},q0,{q1,q3})
+AUTÔMATO=({q0,q1,q3,q4,q5,q7,q8},{L,S,I,P,C,E},q0,{q7})
 
 Prog
 
-(q0,a)=q1
-(q0,b)=q2
-(q1,b)=q2
-(q2,a)=q3
-(q2,a)=q2
-(q3,a)=q3
-(q3,b)=q2
+(q0,S)=q4
+(q0,L)=q1
+(q0,L)=q3
+(q1,I)=q7
+(q3,P)=q5
+(q4,E)=q7
+(q8,I)=q7
+(q5,I)=q7
+(q3,C)=q8
 
 ![alt text](https://github.com/jvzmarmentini/automaton-app/blob/main/aut.png?raw=true)
 
