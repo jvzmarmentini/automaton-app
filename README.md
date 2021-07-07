@@ -68,13 +68,21 @@ AUTÔMATO=({q0,q1,q3,q4,q5,q7,q8},{L,S,I,P,C,E},q0,{q7})
 Prog
 
 (q0,S)=q4
+
 (q0,L)=q1
+
 (q0,L)=q3
+
 (q1,I)=q7
+
 (q3,P)=q5
+
 (q4,E)=q7
+
 (q8,I)=q7
+
 (q5,I)=q7
+
 (q3,C)=q8
 
 ![alt text](https://github.com/jvzmarmentini/automaton-app/blob/main/aut.png?raw=true)
