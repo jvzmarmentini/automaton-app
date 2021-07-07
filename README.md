@@ -41,7 +41,7 @@ Create a program that, given an finite deterministic automaton M, defined in a t
 - Allow the user to give a word to be recognized by the deterministic automaton;
 - The program should determinate if the word received is accepted by the automaton;
 
-### 2. Instructions
+### 2. Description
 
 - The program from item 1 should be implemented using any programming language;
 - The entry file format containing the non-deterministic automaton definition must follow the following pattern (including spaces between words):
@@ -74,6 +74,8 @@ Prog
 (q2,a)=q2
 (q3,a)=q3
 (q3,b)=q2
+
+![alt text](https://github.com/jvzmarmentini/automaton-app/blob/main/aut.png?raw=true)
 
 ### Built With
 
