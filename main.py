@@ -1,7 +1,3 @@
-# TODO
-# * handle "empty symbol" - Tasca
-# * update and improve git docs - Panho
-
 import sys
 import copy
 import networkx as nx
