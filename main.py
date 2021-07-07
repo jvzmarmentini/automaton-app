@@ -52,21 +52,14 @@ def nd2d_converter(rfile, nd_automata):
     closed_list = []
     new_automata = {}
     while(len(open_list) > 0):
-        # print("open_list" + str(open_list))
-        # print("closed_list" + str(closed_list))
         for element in open_list[0]:
-            # print("element: " + str(element))
             for neighbor in nd_automata.neighbors(element):
-                # print("neighbor: " + str(neighbor))
                 edges = nd_automata.get_edge_data(element, neighbor)
                 for sym in edges:
                     if(neighbor not in grammy[edges[sym]["label"]]):
                         grammy[edges[sym]["label"]].append(neighbor)
                     grammy[edges[sym]["label"]].sort()
-            # print("grammy: " + str(grammy))
         new_automata["".join(open_list[0])] = copy.deepcopy(grammy.copy())
-        # print("new_automatta: " + str(new_automata))
-        # print("dict(grammy): " + str(dict(grammy)))
         closed_list.append(open_list.pop(0))
         for sym in grammy:
             if (not grammy[sym] == [] and grammy[sym] not in open_list and closed_list):
